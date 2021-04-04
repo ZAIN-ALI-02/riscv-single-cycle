@@ -72,5 +72,5 @@ Match the output of each instruction according to the output observed in the Ven
 
 
 ## **Circuit SnapShot**
-![RV32I Logisim Snapshot](./circuit_picture/RV32I_sindle_cycle.png)
+![RV32I Logisim Snapshot](circuit_picture/RV32I_sindle_cycle.png)
 
