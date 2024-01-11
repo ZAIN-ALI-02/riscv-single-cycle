@@ -44,7 +44,7 @@ module ALU(
 
         4'b1100: // Arithmetic RIGHT
         begin
-          result_alu = operand_a_alu >>> operand_b_alu[4:0];
+          result_alu = $signed (operand_a_alu) >>> $signed (operand_b_alu[4:0]);
         end
 
         

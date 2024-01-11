@@ -4,9 +4,18 @@ module InstructionDecoder (
 );
 
   always @(*) begin
+               R = 0 ; 
+               I = 0 ; 
+               I_load = 0 ; 
+               I_jalr = 0 ; 
+               S = 0 ; 
+               SB = 0 ; 
+               U_auipc = 0 ; 
+               U_lui = 0 ; 
+               UJ_jal = 0 ;
     case (instruction)
 
-      7'b0110011: R          = 1'b1;    // R_type Instruction 0
+      7'b0110011: R          = 1'b1;               // R_type Instruction 0
       7'b0010011: I          = 1'b1;    // I_type Instruction 1
       7'b0000011: I_load     = 1'b1;    // I(load)_type Instruction 2
       7'b1100111: I_jalr     = 1'b1;    // I(jalr)_type Instruction 3
@@ -32,3 +41,5 @@ module InstructionDecoder (
   end
 
 endmodule
+
+//if operand a is less than operand b output will be (last bit is 1 all others are zero) slti

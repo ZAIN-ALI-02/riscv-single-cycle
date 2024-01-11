@@ -11,8 +11,8 @@ module ControlDecoder (
 
 localparam  zero = 0  ;
 logic op_B ,jal_jalr  , branch_auipc; 
-
-always @(*)begin
+logic i_type;
+always_comb begin
 
     REG_write = (R | I | I_load | I_jalr  | U_auipc | U_lui | UJ_jal) ; 
 
@@ -30,8 +30,9 @@ always @(*)begin
     operand_A [1] = (zero | U_auipc) ;
 
     branch_auipc = (U_lui | U_auipc) ;
-    IMM_Selector [0] = (~I) & (~branch_auipc) ;
-    IMM_Selector [1] = (~I) & (~S) ;
+    i_type =  (I | I_load | I_jalr);
+    IMM_Selector [0] = (~i_type) & (~branch_auipc) ;
+    IMM_Selector [1] = (~i_type) & (~S) ;
 
     Next_pc [0] = (UJ_jal | Branch) ;
     Next_pc [1] = (I_jalr | Branch) ;
@@ -40,10 +41,10 @@ always @(*)begin
     ALU [1] = (I_jalr | UJ_jal | I_load | U_lui) ;
     ALU [2] = (S | UJ_jal | U_lui | U_auipc) ;
 
-    ALU_Selector [0] = (((~ALU[2]) & (~ALU[1]) & (~Func_3[2]) & Func_3[1] & (~Func_3[0])) | ((~ALU[2]) & (~ALU[1]) & Func_3[2] & (~Func_3[1]) ) | (ALU[0] & ALU[1]) );
-    ALU_Selector [1] = (((~ALU[2]) & (~ALU[1]) & (~ALU[0]) & Func_7) | ((~ALU[2]) & (~ALU[1]) & (~Func_3[2]) & (~Func_3[1]) & Func_3[0] ) | ((~ALU[2]) & (~ALU[1]) & Func_3[0] & (~Func_3[1]) & Func_7) | (ALU[0] & ALU[1]));
-    ALU_Selector [2] = (((~ALU[2]) & (~ALU[1]) & (~ALU[0]) & (~Func_3[2])  & Func_7 ) | ((~ALU[2]) & (~ALU[1]) & (~Func_3[2]) & Func_3[1] & Func_3[0]) | ((~ALU[2]) & (~ALU[1]) & Func_3[2] & (~Func_3[1])  & (~Func_7)) | ((~ALU[2]) & (~ALU[1]) & Func_3[2] & (~Func_3[0])) | (ALU[1] & ALU[0])) ;
-    ALU_Selector [3] = (((~ALU[2]) & (~ALU[1]) & Func_3[1] & Func_3[0] ) | ((~ALU[2]) & (~ALU[1]) & Func_3[2] & (~Func_3[1]) & (~Func_3[0])) | (ALU[1] & ALU[0]));
+    ALU_Selector [3] = (((~ALU[2]) & (~ALU[1]) & (~Func_3[2]) & Func_3[1] & (~Func_3[0])) | ((~ALU[2]) & (~ALU[1]) & Func_3[2] & (~Func_3[1]) ) | (ALU[0] & ALU[1]) );
+    ALU_Selector [2] = (((~ALU[2]) & (~ALU[1]) & (~ALU[0]) & Func_7) | ((~ALU[2]) & (~ALU[1]) & (~Func_3[2]) & (~Func_3[1]) & Func_3[0] ) | ((~ALU[2]) & (~ALU[1]) & Func_3[0] & (~Func_3[1]) & Func_7) | (ALU[0] & ALU[1]));
+    ALU_Selector [1] = (((~ALU[2]) & (~ALU[1]) & (~ALU[0]) & (~Func_3[2])  & Func_7 ) | ((~ALU[2]) & (~ALU[1]) & (~Func_3[2]) & Func_3[1] & Func_3[0]) | ((~ALU[2]) & (~ALU[1]) & Func_3[2] & (~Func_3[1])  & (~Func_7)) | ((~ALU[2]) & (~ALU[1]) & Func_3[2] & (~Func_3[0])) | (ALU[1] & ALU[0])) ;
+    ALU_Selector [0] = (((~ALU[2]) & (~ALU[1]) & Func_3[1] & Func_3[0] ) | ((~ALU[2]) & (~ALU[1]) & Func_3[2] & (~Func_3[1]) & (~Func_3[0])) | (ALU[1] & ALU[0]));
 
 end
 endmodule
